@@ -39,3 +39,22 @@ sbt "runMain kafkaConsumer"
 
 # Run the Kafka producer
 sbt "runMain kafkaProducer"
+
+```
+
+Remember to configure your Kafka broker details, topic names, and any other necessary settings in the consumer and producer implementations.
+
+##About
+This project serves as a simple example of managing and validating timestamps in a Kafka environment. It's designed to aid developers in understanding how to address timestamp-related issues that can arise when working with Kafka producers and consumers.
+
+Feel free to explore, modify, and expand upon this project for your own use cases. If you have any questions, suggestions, or improvements, please don't hesitate to create an issue or pull request in this repository.
+
+##License
+This project is licensed under the MIT License, allowing you to use, modify, and distribute the code as needed.
+
+Happy Kafka coding! 🚀
+
+
+
+
+
