@@ -14,7 +14,8 @@ lazy val sparkSQLProvided = "org.apache.spark" %% "spark-sql" % sparkVersion % P
 lazy val databricksCommonDeps = Seq(sparkSQLProvided)
 
 libraryDependencies ++= databricksCommonDeps
-libraryDependencies += "org.apache.kafka" % "kafka-clients" % "3.5.1"
+libraryDependencies += "org.apache.kafka" % "kafka-clients" % "3.5.1" % Provided
+libraryDependencies += "org.apache.spark" %% "spark-sql-kafka-0-10" % "3.4.1" % Provided
 
 assemblyMergeStrategy in assembly := {
   case x if x.contains("META-INF") => MergeStrategy.discard

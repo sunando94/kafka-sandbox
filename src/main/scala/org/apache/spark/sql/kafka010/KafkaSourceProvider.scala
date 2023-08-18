@@ -307,7 +307,7 @@ private[kafka010] class KafkaSourceProvider extends DataSourceRegister
           + "operations to explicitly deserialize the values.")
     }
 
-    //Todo: removed the interceptor class code.
+    //Todo: removed the interceptor class do
     val otherUnsupportedConfigs = Seq(
       ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG)
 

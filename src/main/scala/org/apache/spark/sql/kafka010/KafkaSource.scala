@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.spark.sql.kafka010.custom
+package org.apache.spark.sql.kafka010
 
 import org.apache.kafka.common.TopicPartition
 import org.apache.spark.SparkContext
@@ -28,7 +28,7 @@ import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming
 import org.apache.spark.sql.connector.read.streaming.{Offset => _, _}
 import org.apache.spark.sql.execution.streaming._
-import org.apache.spark.sql.kafka010.{EarliestOffsetRangeLimit, GlobalTimestampRangeLimit, KafkaExceptions, KafkaOffsetRangeLimit, KafkaOffsetReader, KafkaSourceInitialOffsetWriter, KafkaSourceOffset, KafkaSourceRDD, LatestOffsetRangeLimit, MockedSystemClock, PartitionOffsetMap, SpecificOffsetRangeLimit, SpecificTimestampRangeLimit}
+//import org.apache.spark.sql.kafka010.{EarliestOffsetRangeLimit, GlobalTimestampRangeLimit, KafkaExceptions, KafkaOffsetRangeLimit, KafkaOffsetReader, KafkaSourceInitialOffsetWriter, KafkaSourceOffset, KafkaSourceRDD, LatestOffsetRangeLimit, MockedSystemClock, PartitionOffsetMap, SpecificOffsetRangeLimit, SpecificTimestampRangeLimit}
 import org.apache.spark.sql.kafka010.KafkaSourceProvider._
 import org.apache.spark.sql.types._
 import org.apache.spark.util.{Clock, SystemClock, Utils}
@@ -77,7 +77,7 @@ private[kafka010] class KafkaSource(
                                      metadataPath: String,
                                      startingOffsets: KafkaOffsetRangeLimit,
                                      failOnDataLoss: Boolean)
-  extends Source with Logging {
+  extends SupportsAdmissionControl with Source with Logging {
 
   private val sc = sqlContext.sparkContext
 
@@ -131,7 +131,7 @@ private[kafka010] class KafkaSource(
     }.partitionToOffsets
   }
 
-   def getDefaultReadLimit: ReadLimit = {
+   override def getDefaultReadLimit: ReadLimit = {
     if (minOffsetPerTrigger.isDefined && maxOffsetsPerTrigger.isDefined) {
       ReadLimit.compositeLimit(Array(
         ReadLimit.minRows(minOffsetPerTrigger.get, maxTriggerDelayMs),
@@ -161,7 +161,7 @@ private[kafka010] class KafkaSource(
       "latestOffset(Offset, ReadLimit) should be called instead of this method")
   }
 
-   def reportLatestOffset(): streaming.Offset = {
+   override def reportLatestOffset(): streaming.Offset = {
     latestPartitionOffsets.map(KafkaSourceOffset(_)).orNull
   }
 
